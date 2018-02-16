@@ -32,6 +32,8 @@ public class PathFinding : MonoBehaviour {
     public bool DrawPathNodes = false;
     public bool DrawPaths = false;
 
+    public string PathDataFile;
+
     private static PathFinding _instance;
     public static PathFinding Instance {
         get {
@@ -471,7 +473,7 @@ public class PathFinding : MonoBehaviour {
         using (var f = File.Open(filename, FileMode.Open, FileAccess.Read)) {
             // nodes = (float[][])formatter.Deserialize(f);
             // _nodes = nodes.Select(v => new Vector3(v[0], v[1], v[2])).ToArray();
-            _nodes.Deserialize(formatter, f);
+            _nodes = new KDTree(f);
             _weights = (Dictionary<int, float>[])formatter.Deserialize(f);
         }
     }
@@ -496,7 +498,13 @@ public class PathFinding : MonoBehaviour {
     }
 
     void Start() {
-        Build();
+        try {
+            LoadFromDisk(PathDataFile);
+        }
+        catch {
+            Build();
+        }
+
         foreach (var node in GameObject.FindObjectsOfType<PathNode>()) {
             Destroy(node.gameObject);
         }

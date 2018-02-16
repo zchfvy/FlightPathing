@@ -90,6 +90,9 @@ class KDTree {
         throw new NotImplementedException();
     }
 
+    public KDTree(FileStream data) {
+        this.Deserialize(data);
+    }
 
     public KDTree(IEnumerable<Vector3> nodes) {
         var elems = nodes.Count();
@@ -179,7 +182,8 @@ class KDTree {
         formatter.Serialize(stream, _planes);
     }
 
-    public void Deserialize(BinaryFormatter formatter, FileStream stream) {
+    public void Deserialize(FileStream stream) {
+        var formatter = new BinaryFormatter();
         var points = (float[][])formatter.Deserialize(stream);
         _points = points.Select(v => new Vector3(v[0], v[1], v[2])).ToArray();
         _planes = (float[])formatter.Deserialize(stream);

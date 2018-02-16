@@ -15,12 +15,11 @@ public class PathFindingEditor : Editor {
         if (GUILayout.Button("Build Pathfinding")) {
             pathFinding.Build();
         }
-        _filename = GUILayout.TextField(_filename);
         if (GUILayout.Button("Save Pathfinding")) {
-            pathFinding.SaveToDisk(_filename);
+            pathFinding.SaveToDisk(pathFinding.PathDataFile);
         }
         if (GUILayout.Button("Load Pathfinding")) {
-            pathFinding.LoadFromDisk(_filename);
+            pathFinding.LoadFromDisk(pathFinding.PathDataFile);
         }
         
     }
